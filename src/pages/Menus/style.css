@@ -1,0 +1,12 @@
+.item-checkbox>.ant-form-item-row{
+    display: flex !important;
+    flex-direction:unset !important
+}
+.item-checkbox>.ant-row>.ant-form-item-label{
+    width: 20%;
+}.item-checkbox>.ant-row>.ant-form-item-control{
+    width: 20% !important;
+}
+.item-checkbox>.ant-row>.ant-col>.ant-form-item-control-input{
+    width: 60px;
+}

@@ -1,0 +1,16 @@
+@import '~antd/dist/antd.css';
+
+@import './assets/scss/common.css';
+
+.list-role-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+body {
+    margin: 0;
+    font-family: 'Arimo', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  

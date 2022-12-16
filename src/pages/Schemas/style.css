@@ -1,0 +1,58 @@
+.item-checkbox>.ant-form-item-row{
+    display: flex !important;
+    flex-direction:unset !important
+}
+.item-checkbox>.ant-row>.ant-form-item-label{
+    width: 20%;
+}.item-checkbox>.ant-row>.ant-form-item-control{
+    width: 20% !important;
+}
+.item-checkbox>.ant-row>.ant-col>.ant-form-item-control-input{
+    width: 60px;
+}
+.ant-select-selection-selected-value {
+    border-radius: 0px 8px 8px 0px;
+    height: 53px;
+  }
+  
+  .ant-select-selection.ant-select-selection--single {
+    height: 53px;
+  }
+  
+  .ant-select-selection.ant-select-selection--single
+    > div
+    > div
+    > div
+    > div
+    + div {
+    margin-top: -5px;
+    padding: 4px 5px 5px 14px !important;
+  }
+  
+  .ant-select-selection.ant-select-selection--single > div > div > div > div {
+    margin-top: -20px;
+  }
+  
+  .ant-select-selection.ant-select-selection--single[aria-expanded="true"]
+    > div
+    > div
+    > div
+    > div {
+      margin-top: -10px;
+  }
+  
+   /*style for when the menu is expanded: show shipment description above icon and name*/ 
+  .ant-select-selection.ant-select-selection--single[aria-expanded="true"]
+      > div
+      > div
+      > div
+      > div
+      + div {
+         margin-top: -15px;
+  }
+  .ant-select-selector{
+    height: fit-content !important;
+    max-height: 250px;
+    /* overflow: scroll; */
+    padding: 0 !important;
+  }
