@@ -10,6 +10,8 @@ const Navdata = () => {
   const [isShortCodes, setShortCode] = useState(false);
   const [isBanners, setBanners] = useState(false);
   const [isSchema, setIsSchema] = useState(false);
+  const [isFeedback, setIsFeedback] = useState(false);
+  const [isUploadImage, setIsUploadImage] = useState(false);
   const [isAuthentications, setAuthentications] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
@@ -121,48 +123,48 @@ const Navdata = () => {
         },
       ],
     },
-    {
-      id: "shortCodes",
-      label: "ShortCodes",
-      icon: "ri-dashboard-2-line",
-      link: "/#",
-      stateVariables: isShortCodes,
-      click: function (e) {
-        e.preventDefault();
-        setShortCode(!isShortCodes);
-        setIscurrentState("ShortCodes");
-        updateIconSidebar(e);
-      },
-      subItems: [
-        {
-          id: "shortCodes",
-          label: "ShortCodes",
-          link: "/shortCodes",
-          parentId: "shortCode",
-        },
-      ],
-    },
-    {
-      id: "banners",
-      label: "Banners",
-      icon: "ri-dashboard-2-line",
-      link: "/#",
-      stateVariables: isBanners,
-      click: function (e) {
-        e.preventDefault();
-        setBanners(!isBanners);
-        setIscurrentState("Banners");
-        updateIconSidebar(e);
-      },
-      subItems: [
-        {
-          id: "banners",
-          label: "Banners",
-          link: "/banners",
-          parentId: "banner",
-        },
-      ],
-    },
+    // {
+    //   id: "shortCodes",
+    //   label: "ShortCodes",
+    //   icon: "ri-dashboard-2-line",
+    //   link: "/#",
+    //   stateVariables: isShortCodes,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setShortCode(!isShortCodes);
+    //     setIscurrentState("ShortCodes");
+    //     updateIconSidebar(e);
+    //   },
+    //   subItems: [
+    //     {
+    //       id: "shortCodes",
+    //       label: "ShortCodes",
+    //       link: "/shortCodes",
+    //       parentId: "shortCode",
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: "banners",
+    //   label: "Banners",
+    //   icon: "ri-dashboard-2-line",
+    //   link: "/#",
+    //   stateVariables: isBanners,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setBanners(!isBanners);
+    //     setIscurrentState("Banners");
+    //     updateIconSidebar(e);
+    //   },
+    //   subItems: [
+    //     {
+    //       id: "banners",
+    //       label: "Banners",
+    //       link: "/banners",
+    //       parentId: "banner",
+    //     },
+    //   ],
+    // },
     {
       id: "schemas",
       label: "Schemas",
@@ -221,6 +223,51 @@ const Navdata = () => {
           label: "RoleActions",
           link: "/roleActions",
           parentId: "roleAction",
+        },
+      ],
+    },
+
+    // --
+    {
+      id: "feedbacks",
+      label: "Feedbacks",
+      icon: "ri-dashboard-2-line",
+      link: "/#",
+      stateVariables: isFeedback,
+      click: function (e) {
+        e.preventDefault();
+        setIsFeedback(!isFeedback);
+        setIscurrentState("Menus");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "feedbacks",
+          label: "Feedback",
+          link: "/feedbacks",
+          parentId: "post",
+        },
+      ],
+    },
+    // --
+    {
+      id: "uploadImages",
+      label: "UploadImages",
+      icon: "ri-dashboard-2-line",
+      link: "/#",
+      stateVariables: isUploadImage,
+      click: function (e) {
+        e.preventDefault();
+        setIsUploadImage(!isUploadImage);
+        setIscurrentState("Menus");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "uploadImages",
+          label: "UploadImage",
+          link: "/uploadImages",
+          parentId: "post",
         },
       ],
     },

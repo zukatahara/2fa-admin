@@ -44,7 +44,7 @@ const getBase64 = (file) =>
 
     reader.onerror = (error) => reject(error);
   });
-const Menus = () => {
+const UploadImages = () => {
   document.title = "Management Menus";
 
   const [form] = Form.useForm();
@@ -442,8 +442,6 @@ const Menus = () => {
                     </Select>
                   </Form.Item>
 
-                 
-
                   <Form.Item name="menuIcon" label="Menu Icon" className="">
                     <Space align="start">
                       <Upload
@@ -630,4 +628,4 @@ const Menus = () => {
   );
 };
 
-export default Menus;
+export default UploadImages;

@@ -95,3 +95,11 @@ export const API_USER_UPDATE = "/api/user/update";
 export const API_USER_DELETE = "/api/user/delete";
 export const API_USER_GET_PAGING = "/api/user/getPaging";
 export const API_USER_GET_PAGING_BY_ID = "/api/user/getById";
+
+//Feedback
+export const API_FEEDBACK_INSERT = "/api/feedback/insert";
+// export const API_FEEDBACK_GETALL = "/api/feedback/getAll";
+export const API_FEEDBACK_UPDATE = "/api/feedback/update";
+export const API_FEEDBACK_DELETE = "/api/feedback/delete";
+export const API_FEEDBACK_GET_PAGING = "/api/feedback/getPaging";
+// export const API_FEEDBACK_GET_PAGING = "/api/menu/getPaging";

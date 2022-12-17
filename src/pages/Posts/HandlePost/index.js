@@ -64,6 +64,7 @@ const getAllPagingPostsV2 = async (_params) => {
     dataRes?.data &&
     dataRes?.data.length > 0 &&
     dataRes?.data.map((item) => {
+      console.log(item);
       return {
         key: item._id,
         title: item.title,

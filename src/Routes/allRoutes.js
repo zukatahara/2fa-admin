@@ -18,7 +18,8 @@ import Roles from "../pages/Authentication/Role";
 import Actions from "../pages/Authentication/Action";
 import RoleActions from "../pages/Authentication/RoleAction";
 import SchemasActions from "../pages/Schemas";
-
+import Feedbacks from "../pages/Feedbacks";
+import UploadImages from "../pages/UploadImages";
 const authProtectedRoutes = [
   { path: "/dashboard-analytics", component: DashboardAnalytics },
   { path: "/posts", component: Posts },
@@ -34,6 +35,9 @@ const authProtectedRoutes = [
   { path: "/actions", component: Actions },
   { path: "/roleActions", component: RoleActions },
   { path: "/schemas", component: SchemasActions },
+  { path: "/feedbacks", component: Feedbacks },
+  { path: "/uploadImages", component: UploadImages },
+
   {
     path: "/",
     exact: true,

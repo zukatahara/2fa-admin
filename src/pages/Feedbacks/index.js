@@ -12,6 +12,7 @@ import {
   Table,
   Upload,
   Modal,
+  Rate,
 } from "antd";
 import "./style.css";
 import {
@@ -22,18 +23,21 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import {
-  deleteMenu,
-  getAllMenu,
-  getSchemasByPage,
-  insertMenu,
-  insertSchemas,
-  updateMenu,
-  updateSchemas,
+  // deleteMenu,
+  deleteFeedback,
+  // getAllMenu,
+  getAllFeedback,
+  // getSchemasByPage,
+  insertFeedback,
+  // insertSchemas,
+  // updateMenu,
+  updateFeedback,
+  // updateSchemas,
 } from "../../helpers/helper";
 import moment from "moment";
 import { deleteImageBunny, uploadFileToBunny } from "../../helpers/api_bunny";
 import { Drawer } from "antd";
-import toSlug from "../../common/function";
+// import toSlug from "../../common/function";
 const { Option } = Select;
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -44,12 +48,14 @@ const getBase64 = (file) =>
 
     reader.onerror = (error) => reject(error);
   });
-const Menus = () => {
-  document.title = "Management Menus";
+const Feedbacks = () => {
+  document.title = "Management Feedbacks";
 
   const [form] = Form.useForm();
   const [listCat, setListCat] = useState([]);
   const [listMenu, setListMenu] = useState([]);
+  const [listFeedback, setListFeedback] = useState([]);
+
   const [isShow, setIsShow] = useState(true);
 
   const [previewImage, setPreviewImage] = useState("");
@@ -60,15 +66,19 @@ const Menus = () => {
   const [content, setContent] = useState("");
   const [drawerTitle, setDrawerTitle] = useState("");
 
+  // -- Load data
   useEffect(() => {
     async function fetchData() {
       const dataRes = await getAllData();
-      setListMenu(dataRes);
+      setListFeedback(dataRes);
     }
     fetchData();
   }, []);
-  const handleChangeImage = ({ fileList: newFileList }) =>
-    setFileList(newFileList);
+  // console.log(`listFeedback`, listFeedback);
+  // --
+
+  // const handleChangeImage = ({ fileList: newFileList }) =>
+  //   setFileList(newFileList);
   const getAllData = async (_prams) => {
     const params = _prams
       ? _prams
@@ -77,58 +87,56 @@ const Menus = () => {
           pageSize: 100000,
           search: "",
         };
-    console.log(params);
-    const dataRes = await getAllMenu(params);
+    // console.log(params);
+    // const dataRes = await getAllMenu(params);
+    const dataRes = await getAllFeedback(params);
     const data =
       dataRes?.data &&
       dataRes?.data.length > 0 &&
       dataRes?.data.map((item) => {
+        console.log(item, "saedsa   ");
         return {
           key: item._id,
-          menuName: item.menuName,
-          menuSlug: item.menuSlug,
-          menuIcon: item.menuIcon,
-          menuOrder: item.menuOrder,
-          parent: item.parent,
-          isShow: item.isShow,
+          feedbackName: item.feedbackName,
+          feedbackContent: item.feedbackContent,
+          feedbackRate: item.feedbackRate,
           createdTime: moment(new Date(item.createdTime)).format("DD/MM/YYYY"),
         };
       });
     return dataRes?.data ? data : [];
   };
 
-  const onFinish = async (data) => {
-    const dataReq = {
-      menuName: data.menuName,
-      menuSlug: data.menuSlug,
-      menuIcon: previewTitle,
-      menuOrder: data.menuOrder,
-      parent: data.parent,
-      isShow: isShow,
-    };
-    const dataSchema = {
-      name: data.nameSchemas,
-      script: data.script,
-      page: data.menuSlug,
-    };
+  // console.log('getAllData', getAllData);
 
+  const onFinish = async (data) => {
+    console.log(data);
+    const dataReq = {
+      feedbackName: data.feedbackName,
+      feedbackContent: data.feedbackContent,
+      feedbackRate: data.feedbackRate,
+    };
+    // console.log("dataReq: ", dataReq);
     if (!data.id) {
+      console.log(`ko co id`);
       //Save
-      const dataRes = await insertMenu(dataReq);
-      if (dataRes.status === 1) {
+      const dataRes = await insertFeedback(dataReq);
+      if (dataRes) {
         message.success(`Save Success! ${dataRes.message}`);
         setVisibleForm(false);
         handleCloseDrawer();
-        await insertSchemas(dataSchema);
+        // await insertSchemas(dataSchema);
       } else {
         message.error(`Save Failed! ${dataRes.message}`);
       }
     } else {
-      //Update
+      console.log(`co id`, data.id);
 
-      const dataRes = await updateMenu(data.id, dataReq);
+      //Update
+      // const dataRes = await updateMenu(data.id, dataReq);
+      const dataRes = await updateFeedback(data.id, dataReq);
+
       if (dataRes.status === 1) {
-        await updateSchemas(data.idschema, dataSchema);
+        // await updateSchemas(data.idschema, dataSchema);
         message.success(`Save Success! ${dataRes.message}`);
         handleCloseDrawer();
       } else {
@@ -136,68 +144,55 @@ const Menus = () => {
       }
     }
     const dataRes = await getAllData();
-    setListMenu(dataRes);
+    setListFeedback(dataRes);
     form.resetFields();
-    setPreviewImage("");
-    setPreviewTitle("");
+    // setPreviewImage("");
+    // setPreviewTitle("");
   };
-  const handleChangeTitle = (value) => {
-    form.setFieldsValue({
-      menuSlug: toSlug(value),
-    });
-  };
+  // const handleChangeTitle = (value) => {
+  //   form.setFieldsValue({
+  //     menuSlug: toSlug(value),
+  //   });
+  // };
   const handleRefresh = async () => {
     form.resetFields();
     const dataRes = await getAllData();
-    setListMenu(dataRes);
-    setPreviewImage("");
+    setListFeedback(dataRes);
+    // setPreviewImage("");
     // setIsShow(true);
   };
 
   const handleSearch = async () => {
     const dataForm = form.getFieldsValue();
+    console.log('dataForm: ', dataForm);
+
     const params = {
       pageIndex: 1,
       pageSize: 10,
       search: dataForm.menuNameSearch ? dataForm.menuNameSearch : "",
     };
     const dataRes = await getAllData(params);
-    setListMenu(dataRes);
+    // setListMenu(dataRes);
+    setListFeedback(dataRes);
   };
 
   const onEdit = async (key) => {
-    const dataEdit = listMenu.filter((item) => item.key === key);
-
-    setIsShow(dataEdit[0].isShow);
-    const dataSchema = await getSchemasByPage(dataEdit[0].menuSlug);
+    // console.log(key);
+    const dataEdit = listFeedback.filter((item) => item.key === key);
+    console.log("dataEdit: ", dataEdit);
     form.setFieldsValue({
-      nameSchemas: dataSchema[0]?.name,
-      script: dataSchema[0]?.script,
-      idschema: dataSchema[0]?._id,
-      menuName: dataEdit[0].menuName,
-      menuSlug: dataEdit[0].menuSlug,
-      menuIcon: dataEdit[0].menuIcon,
-      menuOrder: dataEdit[0].menuOrder,
-      parent: dataEdit[0].parent,
-      id: dataEdit[0].key,
-      isShow: dataEdit[0].isShow,
+      id: dataEdit[0]?.key,
+      feedbackName: dataEdit[0]?.feedbackName,
+      feedbackContent: dataEdit[0]?.feedbackContent,
+      feedbackRate: dataEdit[0]?.feedbackRate,
     });
-
-    setPreviewImage(`https://bongdathethao.b-cdn.net/${dataEdit[0].menuIcon}`);
-    setPreviewTitle(dataEdit[0].menuIcon);
-    setFileList([
-      {
-        url: `https://bongdathethao.b-cdn.net/${dataEdit[0].menuIcon}`,
-        name: dataEdit[0].menuIcon,
-      },
-    ]);
-    setContent("");
     setDrawerTitle("Edit Menu");
     showDrawer();
   };
 
   const onDelete = async (key) => {
-    const dataRes = await deleteMenu(key);
+    console.log(key);
+    const dataRes = await deleteFeedback(key);
     dataRes.status === 1
       ? message.success(`Delete Success! ${dataRes.message}`)
       : message.error(`Delete Failed! ${dataRes.message}`);
@@ -209,11 +204,11 @@ const Menus = () => {
     setIsShow(!isShow);
   };
 
-  const handleCancel = () => setPreviewVisible(false);
+  // const handleCancel = () => setPreviewVisible(false);
 
   const handleNewFeedback = () => {
     setContent("");
-    setDrawerTitle("Add Menu");
+    setDrawerTitle("Add Feedback");
     showDrawer();
     console.log(visibleForm);
     form.resetFields();
@@ -263,24 +258,16 @@ const Menus = () => {
 
   const columns = [
     {
-      title: "Menu Name",
-      dataIndex: "menuName",
+      title: "Name",
+      dataIndex: "feedbackName",
     },
     {
-      title: "Menu Slug",
-      dataIndex: "menuSlug",
+      title: "Content",
+      dataIndex: "feedbackContent",
     },
     {
-      title: "Menu Order",
-      dataIndex: "menuOrder",
-    },
-    // {
-    //   title: "Menu Parent",
-    //   dataIndex: "menuParent",
-    // },
-    {
-      title: "Menu Icon",
-      dataIndex: "menuIcon",
+      title: "Rate",
+      dataIndex: "feedbackRate",
     },
     {
       title: "Created Time",
@@ -290,7 +277,7 @@ const Menus = () => {
       title: "Action",
       dataIndex: "",
       render: (_, record) =>
-        listMenu.length >= 1 ? (
+        listFeedback.length >= 1 ? (
           <Space>
             <Tooltip title="Edit">
               <Button
@@ -355,6 +342,7 @@ const Menus = () => {
               }}
               style={{ marginTop: "70px" }}
             >
+              {/* -- form  */}
               <Form
                 form={form}
                 layout="vertical"
@@ -367,180 +355,65 @@ const Menus = () => {
                       <Input name="id" />
                     </Form.Item>
                   </Col>
+                  {/* Name */}
                   <Form.Item
-                    name="menuName"
-                    label="Menu Name"
+                    label="Name"
+                    name="feedbackName"
                     rules={[
                       {
                         required: true,
-                        message: "Please input menu  name!",
-                      },
-                      {
-                        type: "menuName",
-                      },
-                      {
-                        type: "string",
-                        min: 1,
+                        message: "Please input your username!",
                       },
                     ]}
                   >
                     <Input
-                      placeholder="Enter name"
-                      name="menuName"
-                      allowClear={true}
-                      onChange={(e) => handleChangeTitle(e.target.value)}
+                      placeholder="Enter name!"
+                      // name="feedbackName"
+                      // allowClear={true}
+                      // onChange={(e) => handleChangeTitle(e.target.value)}
                     />
                   </Form.Item>
+                  {/* Content */}
                   <Form.Item
-                    name="menuSlug"
-                    label="Menu Slug"
+                    label="Content"
+                    name="feedbackContent"
                     rules={[
                       {
                         required: true,
-                        message: "Please input menu slug!",
-                      },
-                      {
-                        type: "menuSlug",
-                      },
-                      {
-                        type: "string",
-                        min: 1,
+                        message: "Please input your password!",
                       },
                     ]}
                   >
-                    <Input
-                      placeholder="Enter post slug!"
-                      name="menuSlug"
-                      allowClear={true}
-                    />
+                    <Input placeholder="Enter Content!" />
                   </Form.Item>
-
-                  <Form.Item name="menuOrder" label="Menu Order">
-                    <Input
-                      placeholder="Enter number of menu order"
-                      name="menuOrder"
-                      allowClear={true}
+                  {/* Rate */}
+                  <Form.Item
+                    name="feedbackRate"
+                    label="Rate"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please choses rate!",
+                      },
+                    ]}
+                  >
+                    {/* <Input
+                      placeholder="Enter rate number!"
+                      name="feedbackRate"
+                      // allowClear={true}
                       type="number"
-                    />
+                    /> */}
+                    <Rate />
                   </Form.Item>
-
-                  <Form.Item name="parent" label="Menu Parent">
-                    <Select
-                      placeholder="Select a menu parent!"
-                      allowClear
-                      showSearch
-                      name="menus"
-                    >
-                      {listMenu.length > 0 &&
-                        listMenu.map((item) => {
-                          return (
-                            <Option key={item.key} value={item.key}>
-                              {item.menuName}
-                            </Option>
-                          );
-                        })}
-                    </Select>
-                  </Form.Item>
-
-                 
-
-                  <Form.Item name="menuIcon" label="Menu Icon" className="">
-                    <Space align="start">
-                      <Upload
-                        {...props}
-                        listType="picture-card"
-                        fileList={fileList}
-                        onChange={handleChangeImage}
-                        onPreview={handlePreview}
-                      >
-                        <div>
-                          <PlusOutlined />
-                          <div
-                            style={{
-                              marginTop: 8,
-                            }}
-                          >
-                            Upload
-                          </div>
-                        </div>
-                      </Upload>
-                      {previewImage && (
-                        <>
-                          <Modal
-                            visible={previewVisible}
-                            title={previewTitle}
-                            footer={null}
-                            onCancel={handleCancel}
-                          >
-                            <img
-                              alt={previewTitle}
-                              style={{ width: "100%" }}
-                              src={previewImage}
-                            />
-                          </Modal>
-                        </>
-                      )}
-                    </Space>
-                  </Form.Item>
-                  <Row>
-                    <Form.Item
-                      name="isShow"
-                      label="Is Show"
-                      rules={[
-                        {
-                          required: false,
-                          message: "Please menu is Show!",
-                        },
-                        {
-                          type: "isShow",
-                        },
-                      ]}
-                      className="item-checkbox"
-                    >
-                      <Input
-                        type="checkbox"
-                        checked={isShow}
-                        onChange={handleChange}
-                        allowClear={true}
-                        style={{ border: "aliceblue" }}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      name="nameSchemas"
-                      label="Name Schemas"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please enter name schemas!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        placeholder="Enter name of schemas"
-                        name="nameSchemas"
-                        allowClear={true}
-                      />
-                    </Form.Item>
-                    <Form.Item name="script" label="Script Schemas">
-                      <Input.TextArea
-                        placeholder="Enter script of schemas"
-                        name="script"
-                        allowClear={true}
-                        style={{ height: "200px" }}
-                      />
-                    </Form.Item>
-                    <Col hidden={true}>
-                      <Form.Item name="idschema" label="Id">
-                        <Input name="idschema" />
-                      </Form.Item>
-                    </Col>
-                  </Row>
                 </Row>
+
                 <Form.Item className="mt-3">
                   <Space>
+                    {/* Submit */}
                     <Button type="primary" htmlType="submit">
                       Save
                     </Button>
+                    {/* Refresh */}
                     <Button
                       type="info"
                       htmlType="button"
@@ -548,12 +421,15 @@ const Menus = () => {
                     >
                       Refresh
                     </Button>
+                    {/* Close */}
                     <Button type="danger" onClick={handleCloseDrawer}>
                       Close
                     </Button>
                   </Space>
                 </Form.Item>
               </Form>
+
+              {/* form --  */}
             </Drawer>
           </div>
           <Row>
@@ -572,7 +448,7 @@ const Menus = () => {
                 <Col sm={3}>
                   <Form.Item
                     name="menuNameSearch"
-                    label="Search menu by menu name:"
+                    label="Search feedback by feedback name:"
                     rules={[
                       {
                         required: false,
@@ -622,7 +498,7 @@ const Menus = () => {
           </Row>
 
           <div>
-            <Table columns={columns} dataSource={listMenu} />
+            <Table columns={columns} dataSource={listFeedback} />
           </div>
         </Container>
       </div>
@@ -630,4 +506,4 @@ const Menus = () => {
   );
 };
 
-export default Menus;
+export default Feedbacks;
