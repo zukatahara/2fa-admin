@@ -270,18 +270,18 @@ const Menus = () => {
       title: "Menu Slug",
       dataIndex: "menuSlug",
     },
-    {
-      title: "Menu Order",
-      dataIndex: "menuOrder",
-    },
+    // {
+    //   title: "Menu Order",
+    //   dataIndex: "menuOrder",
+    // },
     // {
     //   title: "Menu Parent",
     //   dataIndex: "menuParent",
     // },
-    {
-      title: "Menu Icon",
-      dataIndex: "menuIcon",
-    },
+    // {
+    //   title: "Menu Icon",
+    //   dataIndex: "menuIcon",
+    // },
     {
       title: "Created Time",
       dataIndex: "createdTime",
@@ -415,16 +415,16 @@ const Menus = () => {
                     />
                   </Form.Item>
 
-                  <Form.Item name="menuOrder" label="Menu Order">
+                  {/* <Form.Item name="menuOrder" label="Menu Order">
                     <Input
                       placeholder="Enter number of menu order"
                       name="menuOrder"
                       allowClear={true}
                       type="number"
                     />
-                  </Form.Item>
+                  </Form.Item> */}
 
-                  <Form.Item name="parent" label="Menu Parent">
+                  {/* <Form.Item name="parent" label="Menu Parent">
                     <Select
                       placeholder="Select a menu parent!"
                       allowClear
@@ -440,11 +440,11 @@ const Menus = () => {
                           );
                         })}
                     </Select>
-                  </Form.Item>
+                  </Form.Item> */}
 
                  
 
-                  <Form.Item name="menuIcon" label="Menu Icon" className="">
+                  {/* <Form.Item name="menuIcon" label="Menu Icon" className="">
                     <Space align="start">
                       <Upload
                         {...props}
@@ -481,7 +481,7 @@ const Menus = () => {
                         </>
                       )}
                     </Space>
-                  </Form.Item>
+                  </Form.Item> */}
                   <Row>
                     <Form.Item
                       name="isShow"

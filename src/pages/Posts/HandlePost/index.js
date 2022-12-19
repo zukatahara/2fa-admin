@@ -64,7 +64,7 @@ const getAllPagingPostsV2 = async (_params) => {
     dataRes?.data &&
     dataRes?.data.length > 0 &&
     dataRes?.data.map((item) => {
-      console.log(item);
+      // console.log(item);
       return {
         key: item._id,
         title: item.title,
@@ -123,6 +123,7 @@ export default function NewPost(props) {
   const [visibleForm, setVisibleForm] = useState(false);
   const [title, setTitle] = useState("");
   const [tagsName, setTagsName] = useState([]);
+  const [menusName, setMenusName] = useState([]);
   const videoSchemas = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
@@ -195,10 +196,10 @@ export default function NewPost(props) {
   }, []);
   useEffect(() => {
     const value = props.match.params;
-    console.log(value);
+    // console.log(value);
     const getPost = async () => {
       const post = await getPostById(value.id);
-      console.log(post);
+      // console.log(post);
       const schema = await getSchemasByPost(value.id);
       schema.map((item) => (item.script = JSON.parse(item.script)));
       setCacheSchemas(schema);
@@ -254,6 +255,7 @@ export default function NewPost(props) {
     message.success(`Save schemas Success!`);
   };
   const handleChangeTags = (value) => {
+    // console.log('value: ', value);
     const listTagName = value.map((item) => {
       const index = listTag.findIndex((x) => x._id === item);
       if (index !== -1) {
@@ -275,6 +277,35 @@ export default function NewPost(props) {
       setCacheSchemas(cacheSchemas);
     }
   };
+  //-- handle change menu
+  const handleChangeMenus = (value) => {
+    // console.log("value: ", typeof value);
+    const listMenuName = value.map((item) => {
+      const index = listMenu.findIndex((x) => x._id === item);
+      if (index !== -1) {
+        return listMenu[index].menuName;
+      } else {
+        return item;
+      }
+    });
+    setMenusName(listMenuName);
+    script.articleSection = listMenuName;
+    setScript(script);
+    form.setFieldsValue({ script: JSON.stringify(script, undefined, 4) });
+    if (cacheSchemas.length !== 0) {
+      cacheSchemas.map((item) => {
+        if (item?.script?.articleSection) {
+          item.script.articleSection = listMenuName;
+        }
+      });
+      setCacheSchemas(cacheSchemas);
+    }
+  };
+
+  //--end
+
+  // console.log(`listMenu`, listMenu);
+
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
     script.image[
@@ -298,7 +329,7 @@ export default function NewPost(props) {
     }
   };
   const onFinish = async (data) => {
-    console.log(data, "datadata");
+    // console.log(data, "datadata");
     const addTags = await data?.tags?.map(async (item) => {
       const index = listTag.findIndex((x) => x._id === item);
       if (index === -1) {
@@ -313,7 +344,7 @@ export default function NewPost(props) {
         return item;
       }
     });
-    console.log("haha");
+    // console.log("haha");
     let content = "",
       description = "";
     if (editorContentRef.current) {
@@ -322,22 +353,22 @@ export default function NewPost(props) {
     if (editorDescriptionRef.current) {
       description = editorDescriptionRef.current.getContent() || "";
     }
-    console.log(data);
+    console.log(data.menus, "datadata");
+    // console.log(data);
     const dataReq = {
-      
       title: data.title,
       slug: data.slug,
       // description: description,
       // thumb: previewTitle,
       content: content,
-      menu: data.menu || null,
+      menu: data.menus || null,
       // category: data.category,
-      tags: [],
+      // tags: [],
       user: user_id,
       numberOfReader: data.numberOfReader,
       status: data.id ? data.status : data.status,
     };
-    console.log('dataReq: ', dataReq);
+    console.log("dataReq: ", dataReq.menu);
     if (!data.id) {
       const dataRes = await insertPosts(dataReq);
       if (dataRes.status === 1) {
@@ -503,7 +534,7 @@ export default function NewPost(props) {
       setCacheSchemas(cacheSchemas);
     }
   };
-  console.log(listStatus);
+  // console.log(listStatus);
   return (
     <React.Fragment>
       <div className="page-content">
@@ -583,7 +614,7 @@ export default function NewPost(props) {
                   />
                 </Form.Item>
               </Col>
-              <Col sm={3}>
+              {/* <Col sm={3}>
                 <Form.Item
                   name="menu"
                   label="Post Menu"
@@ -621,8 +652,51 @@ export default function NewPost(props) {
                       })}
                   </Select>
                 </Form.Item>
-              </Col>
+              </Col> */}
+
+              {/* Menu choose multi */}
               <Col sm={3}>
+                <Form.Item
+                  // name="tags"
+                  // label="Post Tags"
+                  name="menus"
+                  label="Post Menus"
+                  rules={[
+                    {
+                      required: false,
+                      message: "Please select post menus!",
+                    },
+                  ]}
+                >
+                  <Select
+                    placeholder="Select post menus!"
+                    allowClear
+                    onChange={handleChangeMenus}
+                    mode="tags"
+                    name="tags"
+                    // filterOption={(input, option) =>
+                    //   option.children.includes(input)
+                    // }
+                    // filterSort={(optionA, optionB) =>
+                    //   optionA.children
+                    //     .toLowerCase()
+                    //     .localeCompare(optionB.children.toLowerCase())
+                    // }
+                  >
+                    {listMenu.length > 0 &&
+                      listMenu.map((item) => {
+                        // console.log(`item`,item);
+                        return (
+                          <Option key={item._id} value={item._id}>
+                            {item.menuName}
+                          </Option>
+                        );
+                      })}
+                  </Select>
+                </Form.Item>
+              </Col>
+              {/* Post tag */}
+              {/* <Col sm={3}>
                 <Form.Item
                   name="tags"
                   label="Post Tags"
@@ -650,6 +724,7 @@ export default function NewPost(props) {
                   >
                     {listTag.length > 0 &&
                       listTag.map((item) => {
+                        // console.log('item: ', item);
                         return (
                           <Option key={item._id} value={item._id}>
                             {item.tagName}
@@ -658,7 +733,8 @@ export default function NewPost(props) {
                       })}
                   </Select>
                 </Form.Item>
-              </Col>
+              </Col> */}
+              
               {/* <Col sm={3}>
                 <Form.Item
                   name="thumb"
@@ -718,7 +794,7 @@ export default function NewPost(props) {
                     name="status"
                     placeholder="Select a post status!"
                     allowClear
-                    
+
                     // defaultValue={{ value: "1", label: "Hiện bài" }}
                   >
                     {listStatus.length > 0 &&
@@ -743,7 +819,6 @@ export default function NewPost(props) {
                   />
                 </Form.Item>
               </Col> */}
-              
 
               <Col xs={12}>
                 <div className="ant-col ant-form-item-label">

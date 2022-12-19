@@ -94,12 +94,12 @@ const Navdata = () => {
         //   link: "/categories",
         //   parentId: "posts",
         // },
-        {
-          id: "tags",
-          label: "Tags",
-          link: "/tags",
-          parentId: "post",
-        },
+        // {
+        //   id: "tags",
+        //   label: "Tags",
+        //   link: "/tags",
+        //   parentId: "post",
+        // },
       ],
     },
     {
@@ -250,27 +250,27 @@ const Navdata = () => {
       ],
     },
     // --
-    {
-      id: "uploadImages",
-      label: "UploadImages",
-      icon: "ri-dashboard-2-line",
-      link: "/#",
-      stateVariables: isUploadImage,
-      click: function (e) {
-        e.preventDefault();
-        setIsUploadImage(!isUploadImage);
-        setIscurrentState("Menus");
-        updateIconSidebar(e);
-      },
-      subItems: [
-        {
-          id: "uploadImages",
-          label: "UploadImage",
-          link: "/uploadImages",
-          parentId: "post",
-        },
-      ],
-    },
+    // {
+    //   id: "uploadImages",
+    //   label: "UploadImages",
+    //   icon: "ri-dashboard-2-line",
+    //   link: "/#",
+    //   stateVariables: isUploadImage,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsUploadImage(!isUploadImage);
+    //     setIscurrentState("Menus");
+    //     updateIconSidebar(e);
+    //   },
+    //   subItems: [
+    //     {
+    //       id: "uploadImages",
+    //       label: "UploadImage",
+    //       link: "/uploadImages",
+    //       parentId: "post",
+    //     },
+    //   ],
+    // },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

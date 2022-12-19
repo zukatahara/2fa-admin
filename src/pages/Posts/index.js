@@ -68,7 +68,7 @@ const getAllPagingPostsV2 = async (_params) => {
     dataRes?.data &&
     dataRes?.data.length > 0 &&
     dataRes?.data.map((item) => {
-      console.log(item.menu)
+      console.log(item.menu);
       return {
         key: item._id,
         title: item.title,
@@ -109,7 +109,7 @@ const Posts = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const resListMenu = await getAllMenu({pageSize:100000});
+      const resListMenu = await getAllMenu({ pageSize: 100000 });
       // const resListCat = await getPagingCategorys({ pageSize: 100000 });
       const resListTag = await getPagingTags({ pageSize: 100000 });
       const resListPost = await getAllPagingPostsV2({ pageSize: 100000 });
@@ -304,9 +304,15 @@ const Posts = () => {
       title: "Menu",
       dataIndex: "menu",
       render: (_, record) => {
-        console.log(record)
-        // return record.menu.menuName && (record.menu.menuName!=null? `(${record.menu.parent.menuName})`:'');
-        return <>{record.menu.menuName + (record.menu.parent!=null?(" ("+record.menu.parent.menuName + ")"):'')} </>
+        console.log(`_`,_);
+        const listMenuName = _?.map((item, index) => {
+                return (
+                  <Tag color="default" key={index}>
+                    {item.menuName}
+                  </Tag>
+                );
+              });
+              return listMenuName;
       },
     },
     // {
@@ -516,7 +522,7 @@ const Posts = () => {
                       </Form.Item>
                     </Col> */}
                     <Col sm={3}>
-                  <Form.Item
+                      <Form.Item
                         name="menu"
                         label="Post Menu"
                         rules={[
@@ -550,7 +556,7 @@ const Posts = () => {
                             })}
                         </Select>
                       </Form.Item>
-                </Col>
+                    </Col>
                     <Col sm={3}>
                       <Form.Item
                         name="tags"
@@ -877,7 +883,6 @@ const Posts = () => {
                       />
                     </Form.Item>
                   </Col>
-                  
                 </Row>
                 <Form.Item>
                   <Space>
